@@ -6,11 +6,11 @@ METHOD:PUBLISH
 BEGIN:VEVENT
 UID:khushal-mitali-wedding-2026@invitation
 DTSTAMP:20260101T000000Z
-DTSTART;TZID=Asia/Kolkata:20261212T200000
-DTEND;TZID=Asia/Kolkata:20261212T233000
+DTSTART;TZID=Asia/Kolkata:20261125T200000
+DTEND;TZID=Asia/Kolkata:20261125T233000
 SUMMARY:Khushal weds Mitali — The Wedding
-DESCRIPTION:Join us for the sacred pheras as Khushal & Mitali (Navya) begin forever. Lakeside Mandap\, The Lakeside Palace Resort\, Udaipur.
-LOCATION:The Lakeside Palace Resort, Lake Pichola Road, Udaipur, Rajasthan 313001, India
+DESCRIPTION:Join us for the sacred pheras as Khushal & Mitali (Navya) begin forever. Laxmi Niwas Palace\, Bikaner.
+LOCATION:Laxmi Niwas Palace, Lallgarh Palace Campus, Bikaner, Rajasthan 334001, India
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR

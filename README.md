@@ -10,8 +10,10 @@ wedding aesthetics (gold, maroon, marigold).
 - **Cinematic opening** — mandala preloader + a parting curtain reveal of the hero.
 - **Falling marigold petals** — a lightweight `<canvas>` particle system.
 - **Live countdown** to the wedding day (with "Add to calendar" `.ics`).
-- **Our Story timeline**, **The Couple**, and five **celebration** cards
-  (Mehndi · Haldi · Sangeet · Wedding · Reception).
+- **The Couple**, five **celebration** cards
+  (Mehndi · Haldi · Sangeet · Wedding · Reception), and an animated
+  **DJ Night** section (neon lights, spinning turntable, and an
+  equalizer that reacts live to the couple's song).
 - **Gallery** with hover captions, a **venue map**, and a working **RSVP form**
   (client-side, with graceful local save).
 - **Scroll-reveal animations**, parallax hero, sticky nav, mobile menu,
