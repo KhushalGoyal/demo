@@ -209,33 +209,184 @@
 
   /* ===========================================================
      MUSIC TOGGLE
+     -----------------------------------------------------------
+     Plays the couple's own track from assets/music.mp3 if present.
+     If no file is found, falls back to a built-in, synthesized
+     wedding melody (Web Audio API) so the button always makes
+     music — no external file required.
      =========================================================== */
   const musicBtn = document.getElementById("musicToggle");
   const audio = document.getElementById("bgMusic");
-  if (musicBtn && audio) {
-    let playing = false;
-    musicBtn.addEventListener("click", function () {
-      if (!playing) {
-        const p = audio.play();
-        if (p && p.catch) {
-          p.then(function () {
-            playing = true;
-            musicBtn.classList.add("is-playing");
-            musicBtn.setAttribute("aria-label", "Pause music");
-          }).catch(function () {
-            // No audio file present / blocked — gentle feedback
-            musicBtn.animate(
-              [{ transform: "scale(1)" }, { transform: "scale(0.9)" }, { transform: "scale(1)" }],
-              { duration: 300 }
-            );
-          });
-        }
-      } else {
-        audio.pause();
-        playing = false;
-        musicBtn.classList.remove("is-playing");
-        musicBtn.setAttribute("aria-label", "Play music");
+
+  // ---- Synthesized ambient wedding melody (Raga Yaman-inspired) ----
+  const Melody = (function () {
+    let ctx = null, master = null, filter = null, delay = null, feedback = null;
+    let drones = [], timer = null, nextTime = 0, step = 0, running = false;
+
+    // E4 F#4 A4 B4 C#5 E5 — a warm, auspicious scale
+    const NOTES = [329.63, 369.99, 440.0, 493.88, 554.37, 659.25];
+    // A gentle 16-step phrase (indices into NOTES)
+    const PHRASE = [2, 4, 3, 1, 2, 3, 5, 4, 3, 1, 2, 4, 1, 0, 2, 3];
+    const STEP_DUR = 0.42;       // seconds per note
+    const LOOKAHEAD = 0.1;       // schedule window
+    const TICK = 25;             // scheduler poll (ms)
+
+    function build() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
+
+      master = ctx.createGain();
+      master.gain.value = 0.0001;
+
+      filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 1900;
+      filter.Q.value = 0.6;
+
+      // soft echo for ambience
+      delay = ctx.createDelay();
+      delay.delayTime.value = 0.33;
+      feedback = ctx.createGain();
+      feedback.gain.value = 0.28;
+      const wet = ctx.createGain();
+      wet.gain.value = 0.35;
+
+      filter.connect(master);
+      filter.connect(delay);
+      delay.connect(feedback);
+      feedback.connect(delay);
+      delay.connect(wet);
+      wet.connect(master);
+      master.connect(ctx.destination);
+
+      // tanpura-like drone pad (A2 + E3)
+      [110.0, 164.81].forEach(function (f, i) {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = f;
+        g.gain.value = i === 0 ? 0.05 : 0.035;
+        osc.connect(g);
+        g.connect(master);
+        osc.start();
+        drones.push(osc);
+      });
+      return true;
+    }
+
+    function playNote(time, freq) {
+      // bell-like plucked tone: triangle + sub sine
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(0.5, time + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 1.1);
+      g.connect(filter);
+
+      const o1 = ctx.createOscillator();
+      o1.type = "triangle";
+      o1.frequency.value = freq;
+      o1.connect(g);
+
+      const o2 = ctx.createOscillator();
+      o2.type = "sine";
+      o2.frequency.value = freq / 2;
+      const g2 = ctx.createGain();
+      g2.gain.value = 0.4;
+      o2.connect(g2);
+      g2.connect(g);
+
+      o1.start(time); o2.start(time);
+      o1.stop(time + 1.2); o2.stop(time + 1.2);
+    }
+
+    function scheduler() {
+      while (nextTime < ctx.currentTime + LOOKAHEAD) {
+        playNote(nextTime, NOTES[PHRASE[step % PHRASE.length]]);
+        nextTime += STEP_DUR;
+        step++;
       }
+      timer = setTimeout(scheduler, TICK);
+    }
+
+    return {
+      start: function () {
+        if (!ctx && !build()) return false;
+        if (ctx.state === "suspended") ctx.resume();
+        running = true;
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
+        master.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 1.6);
+        nextTime = ctx.currentTime + 0.08;
+        scheduler();
+        return true;
+      },
+      stop: function () {
+        if (!ctx || !running) return;
+        running = false;
+        clearTimeout(timer);
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+      },
+    };
+  })();
+
+  if (musicBtn) {
+    let playing = false;
+    let mode = null;          // "file" | "synth"
+    let fileAvailable = false; // set true only if assets/music.mp3 really exists
+
+    // Check up-front whether the couple added their own track. A missing
+    // file leaves audio.play() pending forever in some browsers, so we
+    // decide the source here instead of relying on play() to reject.
+    (function probeFile() {
+      const source = audio && audio.querySelector("source");
+      if (!source) return;
+      const src = source.getAttribute("src");
+      if (!src) return;
+      try {
+        fetch(src, { method: "HEAD" })
+          .then(function (r) { fileAvailable = r.ok; })
+          .catch(function () { fileAvailable = false; });
+      } catch (e) { fileAvailable = false; }
+    })();
+
+    const setPlaying = function (on) {
+      playing = on;
+      musicBtn.classList.toggle("is-playing", on);
+      musicBtn.setAttribute("aria-label", on ? "Pause music" : "Play music");
+    };
+
+    const shake = function () {
+      musicBtn.animate(
+        [{ transform: "scale(1)" }, { transform: "scale(0.9)" }, { transform: "scale(1)" }],
+        { duration: 300 }
+      );
+    };
+
+    musicBtn.addEventListener("click", function () {
+      if (playing) {
+        if (mode === "file" && audio) audio.pause();
+        else Melody.stop();
+        setPlaying(false);
+        return;
+      }
+
+      if (fileAvailable && audio) {
+        const p = audio.play();
+        if (p && p.then) {
+          p.then(function () { mode = "file"; setPlaying(true); })
+           .catch(function () { if (Melody.start()) { mode = "synth"; setPlaying(true); } else shake(); });
+        } else {
+          mode = "file"; setPlaying(true);
+        }
+        return;
+      }
+
+      // No custom track — play the built-in synthesized melody.
+      if (Melody.start()) { mode = "synth"; setPlaying(true); }
+      else shake();
     });
   }
 

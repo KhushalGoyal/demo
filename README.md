@@ -53,7 +53,9 @@ summary.
 - **Photos** — set `background-image` on `.couple__photo` and `.gallery__item`
   in `css/style.css` (placeholders are gradients for now).
 - **Colours** — tweak the CSS custom properties at the top of `css/style.css`.
-- **Music** — drop a track at `assets/music.mp3`.
+- **Music** — the toggle plays a built-in, synthesized wedding melody out of
+  the box (no file needed). Drop a track at `assets/music.mp3` and it will
+  automatically play that instead.
 - **Real RSVP** — point the form at a service (Formspree / Google Forms /
   Netlify Forms); see the note in `js/script.js`.
 
