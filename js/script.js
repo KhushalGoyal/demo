@@ -10,17 +10,39 @@
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Assigned by the music module below; called when the visitor "enters".
+  // A real click is a user gesture, so the song plays with sound — which
+  // browsers forbid before any interaction (true zero-click autoplay of
+  // sound is impossible by policy, so we start it on the Open tap).
+  let startMusicFn = null;
+
   /* ===========================================================
-     PRELOADER — reveal the page once fonts/images settle
+     PRELOADER → INTRO ("Open Invitation") → the page
      =========================================================== */
-  function endLoading() {
-    document.body.classList.remove("is-loading");
+  function showIntro() {
+    // Fade the loading mandala out, revealing the Open Invitation screen.
+    document.body.classList.add("preloaded");
   }
   window.addEventListener("load", function () {
-    setTimeout(endLoading, prefersReduced ? 0 : 1100);
+    setTimeout(showIntro, prefersReduced ? 0 : 900);
   });
-  // Safety net so the curtain never gets stuck
-  setTimeout(endLoading, 4000);
+  setTimeout(showIntro, 3200); // safety if "load" is slow
+
+  function enterSite() {
+    if (document.body.classList.contains("entered")) return;
+    document.body.classList.add("preloaded", "entered");
+    document.body.classList.remove("is-loading"); // part the hero curtains
+    if (startMusicFn) startMusicFn();             // start the song on this gesture
+  }
+  (function wireIntro() {
+    const enterBtn = document.getElementById("enterBtn");
+    const intro = document.getElementById("intro");
+    if (enterBtn) enterBtn.addEventListener("click", enterSite);
+    // Tapping anywhere on the intro also enters.
+    if (intro) intro.addEventListener("click", function (e) {
+      if (e.target !== document.getElementById("enterBtn")) enterSite();
+    });
+  })();
 
   /* ===========================================================
      NAV — scroll state + mobile menu
@@ -400,18 +422,16 @@
     // Check up-front whether the couple added their own track. A missing
     // file leaves audio.play() pending forever in some browsers, so we
     // decide the source here instead of relying on play() to reject.
-    // Once decided, kick off autoplay (defined below).
-    function probeFile() {
+    (function probeFile() {
       const source = audio && audio.querySelector("source");
       const src = source && source.getAttribute("src");
-      if (!src) { armAutoplay(); return; }
+      if (!src) return;
       try {
         fetch(src, { method: "HEAD" })
           .then(function (r) { fileAvailable = !!(r && r.ok); })
-          .catch(function () { fileAvailable = false; })
-          .then(function () { armAutoplay(); });
-      } catch (e) { fileAvailable = false; armAutoplay(); }
-    }
+          .catch(function () { fileAvailable = false; });
+      } catch (e) { fileAvailable = false; }
+    })();
 
     const setPlaying = function (on) {
       playing = on;
@@ -453,7 +473,7 @@
         const p = audio.play();
         if (p && p.then) {
           p.then(function () { mode = "file"; setPlaying(true); })
-           .catch(function () { /* blocked by autoplay policy — retried on interaction */ });
+           .catch(function () { if (Melody.start()) { mode = "synth"; setPlaying(true); } });
         } else {
           mode = "file"; setPlaying(true);
         }
@@ -469,33 +489,14 @@
       setPlaying(false);
     };
 
+    // Exposed so the "Open Invitation" tap (a real user gesture) can start
+    // the song with sound — the moment the visitor enters the page.
+    startMusicFn = startMusic;
+
     musicBtn.addEventListener("click", function () {
       if (playing) { stopMusic(); return; }
       startMusic();
     });
-
-    /* -----------------------------------------------------------
-       Autoplay: start the music as soon as the page is ready.
-       Browsers block audio until the visitor interacts, so if the
-       immediate attempt is refused we start on their first gesture
-       (tap, key, or scroll) — whichever comes first.
-       ----------------------------------------------------------- */
-    const INTERACT = ["pointerdown", "touchstart", "keydown", "scroll"];
-    const onFirstInteract = function () {
-      if (!playing) startMusic();
-      INTERACT.forEach(function (ev) { window.removeEventListener(ev, onFirstInteract); });
-    };
-    let autoKicked = false;
-    function armAutoplay() {
-      if (autoKicked) return;
-      autoKicked = true;
-      startMusic(); // succeeds where the browser allows it; otherwise silently ignored
-      INTERACT.forEach(function (ev) {
-        window.addEventListener(ev, onFirstInteract, { once: true, passive: true });
-      });
-    }
-
-    probeFile();
   }
 
   /* ===========================================================
