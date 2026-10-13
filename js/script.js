@@ -5,8 +5,8 @@
   "use strict";
 
   /* ---------- Wedding date (for countdown) ---------- */
-  // 25 November 2026, 8:00 PM IST (UTC+5:30)
-  const WEDDING_DATE = new Date("2026-11-25T20:00:00+05:30");
+  // 25 November 2026, 7:00 PM IST (UTC+5:30)
+  const WEDDING_DATE = new Date("2026-11-25T19:00:00+05:30");
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -400,17 +400,18 @@
     // Check up-front whether the couple added their own track. A missing
     // file leaves audio.play() pending forever in some browsers, so we
     // decide the source here instead of relying on play() to reject.
-    (function probeFile() {
+    // Once decided, kick off autoplay (defined below).
+    function probeFile() {
       const source = audio && audio.querySelector("source");
-      if (!source) return;
-      const src = source.getAttribute("src");
-      if (!src) return;
+      const src = source && source.getAttribute("src");
+      if (!src) { armAutoplay(); return; }
       try {
         fetch(src, { method: "HEAD" })
-          .then(function (r) { fileAvailable = r.ok; })
-          .catch(function () { fileAvailable = false; });
-      } catch (e) { fileAvailable = false; }
-    })();
+          .then(function (r) { fileAvailable = !!(r && r.ok); })
+          .catch(function () { fileAvailable = false; })
+          .then(function () { armAutoplay(); });
+      } catch (e) { fileAvailable = false; armAutoplay(); }
+    }
 
     const setPlaying = function (on) {
       playing = on;
@@ -444,31 +445,57 @@
       } catch (e) { /* visualization is optional; audio still plays */ }
     };
 
-    musicBtn.addEventListener("click", function () {
-      if (playing) {
-        if (mode === "file" && audio) audio.pause();
-        else Melody.stop();
-        setPlaying(false);
-        return;
-      }
-
+    const startMusic = function () {
+      if (playing) return;
       if (fileAvailable && audio) {
         ensureFileAnalyser();
         if (elCtx && elCtx.state === "suspended") elCtx.resume();
         const p = audio.play();
         if (p && p.then) {
           p.then(function () { mode = "file"; setPlaying(true); })
-           .catch(function () { if (Melody.start()) { mode = "synth"; setPlaying(true); } else shake(); });
+           .catch(function () { /* blocked by autoplay policy — retried on interaction */ });
         } else {
           mode = "file"; setPlaying(true);
         }
-        return;
+      } else {
+        if (Melody.start()) { mode = "synth"; setPlaying(true); }
       }
+    };
 
-      // No custom track — play the built-in synthesized melody.
-      if (Melody.start()) { mode = "synth"; setPlaying(true); }
-      else shake();
+    const stopMusic = function () {
+      if (!playing) return;
+      if (mode === "file" && audio) audio.pause();
+      else Melody.stop();
+      setPlaying(false);
+    };
+
+    musicBtn.addEventListener("click", function () {
+      if (playing) { stopMusic(); return; }
+      startMusic();
     });
+
+    /* -----------------------------------------------------------
+       Autoplay: start the music as soon as the page is ready.
+       Browsers block audio until the visitor interacts, so if the
+       immediate attempt is refused we start on their first gesture
+       (tap, key, or scroll) — whichever comes first.
+       ----------------------------------------------------------- */
+    const INTERACT = ["pointerdown", "touchstart", "keydown", "scroll"];
+    const onFirstInteract = function () {
+      if (!playing) startMusic();
+      INTERACT.forEach(function (ev) { window.removeEventListener(ev, onFirstInteract); });
+    };
+    let autoKicked = false;
+    function armAutoplay() {
+      if (autoKicked) return;
+      autoKicked = true;
+      startMusic(); // succeeds where the browser allows it; otherwise silently ignored
+      INTERACT.forEach(function (ev) {
+        window.addEventListener(ev, onFirstInteract, { once: true, passive: true });
+      });
+    }
+
+    probeFile();
   }
 
   /* ===========================================================
