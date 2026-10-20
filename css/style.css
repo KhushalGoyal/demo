@@ -940,6 +940,7 @@ section:not(.hero) {
 
 @media (max-width: 480px) {
   body { font-size: 16px; }
+  .rsvp__form { grid-template-columns: 1fr; }
 }
 
 /* ============================================================

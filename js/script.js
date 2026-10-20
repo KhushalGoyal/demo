@@ -419,6 +419,88 @@
   }
 
   /* ===========================================================
+     RSVP → Google Form (secure, no credentials in the page)
+     -----------------------------------------------------------
+     Fill RSVP_CONFIG with your Google Form's response endpoint and
+     the entry.* field IDs (from a "Get pre-filled link"). The form
+     posts straight to Google — nothing sensitive lives here.
+     =========================================================== */
+  const RSVP_CONFIG = {
+    // e.g. "https://docs.google.com/forms/d/e/XXXXXXXX/formResponse"
+    action: "",
+    fields: {
+      name: "",      // entry.0000000
+      phone: "",     // entry.0000000
+      attending: "", // entry.0000000
+      guests: "",    // entry.0000000
+      message: "",   // entry.0000000
+    },
+  };
+
+  (function rsvpForm() {
+    const form = document.getElementById("rsvpForm");
+    const statusEl = document.getElementById("rsvpStatus");
+    if (!form || !statusEl) return;
+    const submitBtn = form.querySelector(".rsvp__submit");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = form.guestName.value.trim();
+      const attending = form.attending.value;
+      statusEl.classList.remove("is-error");
+
+      if (!name || !attending) {
+        statusEl.classList.add("is-error");
+        statusEl.textContent = "Please share your name and whether you can join us.";
+        return;
+      }
+
+      if (!RSVP_CONFIG.action) {
+        // Not wired to the Google Form yet.
+        statusEl.classList.add("is-error");
+        statusEl.textContent = "Our RSVP form is being connected — please check back shortly, or call the numbers below.";
+        return;
+      }
+
+      // Build the Google Form payload from the field map.
+      const data = new URLSearchParams();
+      const map = RSVP_CONFIG.fields;
+      if (map.name) data.append(map.name, name);
+      if (map.phone) data.append(map.phone, form.guestPhone.value.trim());
+      if (map.attending) data.append(map.attending, attending);
+      if (map.guests) data.append(map.guests, form.guests.value);
+      if (map.message) data.append(map.message, form.message.value.trim());
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+
+      // Google Forms doesn't send CORS headers, so we fire-and-forget
+      // with no-cors. The response is opaque but the entry is recorded.
+      fetch(RSVP_CONFIG.action, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: data.toString(),
+      })
+        .then(function () {
+          form.reset();
+          submitBtn.textContent = "RSVP received ✓";
+          statusEl.classList.remove("is-error");
+          statusEl.textContent =
+            attending === "Joyfully accepts"
+              ? "Thank you, " + name + "! We can't wait to celebrate with you. 💛"
+              : "Thank you for letting us know, " + name + ". You'll be missed dearly.";
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send my RSVP";
+          statusEl.classList.add("is-error");
+          statusEl.textContent = "Something went wrong — please try again, or call the numbers below.";
+        });
+    });
+  })();
+
+  /* ===========================================================
      Smooth anchor focus for accessibility
      =========================================================== */
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {

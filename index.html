@@ -65,7 +65,8 @@
     <nav class="nav__links" aria-label="Primary">
       <a href="#couple">The Couple</a>
       <a href="#events">Celebrations</a>
-      <a href="#venue" class="nav__cta">Venue</a>
+      <a href="#venue">Venue</a>
+      <a href="#rsvp" class="nav__cta">RSVP</a>
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -115,7 +116,7 @@
       <p class="hero__date reveal" data-delay="720">The Twenty-Fifth of November · Two Thousand Twenty-Six</p>
       <p class="hero__place reveal" data-delay="820">Bikaner · Rajasthan · India</p>
 
-      <a href="#events" class="btn btn--gold reveal" data-delay="940">View our celebrations</a>
+      <a href="#rsvp" class="btn btn--gold reveal" data-delay="940">Reserve your seat</a>
     </div>
 
     <a href="#countdown" class="hero__scroll" aria-label="Scroll down">
@@ -278,6 +279,43 @@
           loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
+  </section>
+
+  <!-- ====== RSVP ====== -->
+  <section class="rsvp" id="rsvp">
+    <div class="section-ornament" aria-hidden="true"></div>
+    <p class="section-eyebrow reveal">Be There</p>
+    <h2 class="section-title reveal">Will you celebrate with us?</h2>
+    <p class="section-sub reveal">Kindly send your response by the 15th of November, 2026.</p>
+
+    <form class="rsvp__form reveal" id="rsvpForm" novalidate>
+      <div class="field">
+        <input type="text" id="guestName" name="guestName" required placeholder=" " />
+        <label for="guestName">Your full name</label>
+      </div>
+      <div class="field">
+        <input type="tel" id="guestPhone" name="guestPhone" placeholder=" " />
+        <label for="guestPhone">Phone number</label>
+      </div>
+      <div class="field">
+        <select id="attending" name="attending" required>
+          <option value="" disabled selected></option>
+          <option value="Joyfully accepts">Joyfully accepts</option>
+          <option value="Regretfully declines">Regretfully declines</option>
+        </select>
+        <label for="attending">Will you attend?</label>
+      </div>
+      <div class="field">
+        <input type="number" id="guests" name="guests" min="1" max="20" value="1" placeholder=" " />
+        <label for="guests">Number of guests</label>
+      </div>
+      <div class="field field--full">
+        <textarea id="message" name="message" rows="3" placeholder=" "></textarea>
+        <label for="message">A note for the couple (optional)</label>
+      </div>
+      <button type="submit" class="btn btn--gold rsvp__submit">Send my RSVP</button>
+      <p class="rsvp__status" id="rsvpStatus" role="status" aria-live="polite"></p>
+    </form>
   </section>
 
   <!-- ====== FOOTER ====== -->
