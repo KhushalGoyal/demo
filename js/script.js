@@ -10,7 +10,16 @@
      appear. While `false` (the default) every RSVP-related element
      stays hidden entirely. */
   const RSVP_ENABLED = false;
-  document.body.classList.toggle("rsvp-on", RSVP_ENABLED);
+
+  // Shareable override: add ?rsvp=1 (or ?rsvp=true/yes) to the link to open
+  // the invitation with RSVP visible, without changing the default for
+  // everyone else. ?rsvp=0 / ?rsvp=false forces it off.
+  let rsvpOn = RSVP_ENABLED;
+  try {
+    const q = new URLSearchParams(window.location.search).get("rsvp");
+    if (q !== null) rsvpOn = !/^(0|false|no|off)$/i.test(q.trim());
+  } catch (e) { /* URL unparsable — fall back to RSVP_ENABLED */ }
+  document.body.classList.toggle("rsvp-on", rsvpOn);
 
   /* ---------- Celebrations start (for countdown) ---------- */
   // Tikka Dastur — 24 November 2026, 3:00 PM IST (UTC+5:30)
