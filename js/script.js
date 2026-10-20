@@ -230,66 +230,6 @@
   }
 
   /* ===========================================================
-     DJ NIGHT EQUALIZER VISUALIZER
-     Bars dance continuously; when the couple's song is playing,
-     they react to its live frequencies via an AnalyserNode.
-     =========================================================== */
-  const DJViz = (function () {
-    const eq = document.getElementById("djEq");
-    if (!eq) return { bindAnalyser: function () {} };
-
-    const BAR_COUNT = 40;
-    const bars = [];
-    for (let i = 0; i < BAR_COUNT; i++) {
-      const b = document.createElement("span");
-      b.className = "dj__bar";
-      eq.appendChild(b);
-      bars.push(b);
-    }
-    const phase = bars.map(function () { return Math.random() * Math.PI * 2; });
-    const speed = bars.map(function () { return 0.6 + Math.random() * 0.9; });
-
-    let analyser = null, data = null, isActive = function () { return false; };
-
-    function idle(i, t) {
-      const a = 0.5 + 0.5 * Math.sin(t * speed[i] + phase[i]);
-      const b = 0.5 + 0.5 * Math.sin(t * speed[i] * 0.5 + phase[i] * 1.7);
-      return 12 + (a * 0.7 + b * 0.3) * 68; // ~12%..80%
-    }
-
-    function loop(now) {
-      const t = now / 1000;
-      if (analyser && isActive()) {
-        analyser.getByteFrequencyData(data);
-        const usable = Math.floor(data.length * 0.72); // skip near-silent highs
-        for (let i = 0; i < bars.length; i++) {
-          const idx = Math.floor((i / bars.length) * usable);
-          bars[i].style.height = (8 + (data[idx] / 255) * 92).toFixed(1) + "%";
-        }
-      } else {
-        for (let i = 0; i < bars.length; i++) {
-          bars[i].style.height = idle(i, t).toFixed(1) + "%";
-        }
-      }
-      requestAnimationFrame(loop);
-    }
-
-    if (!prefersReduced) {
-      requestAnimationFrame(loop);
-    } else {
-      bars.forEach(function (b, i) { b.style.height = (20 + (i % 6) * 11) + "%"; });
-    }
-
-    return {
-      bindAnalyser: function (an, activeFn) {
-        analyser = an;
-        data = new Uint8Array(an.frequencyBinCount);
-        isActive = activeFn;
-      },
-    };
-  })();
-
-  /* ===========================================================
      MUSIC TOGGLE
      -----------------------------------------------------------
      Plays the couple's own track from assets/music.mp3 if present.
@@ -446,30 +386,9 @@
       );
     };
 
-    // Route the audio element through an AnalyserNode so the DJ Night
-    // equalizer can react to the real song. Created once, on first play.
-    let elCtx = null, fileAnalyser = null;
-    const ensureFileAnalyser = function () {
-      if (fileAnalyser || !audio) return;
-      try {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
-        elCtx = new AC();
-        const srcNode = elCtx.createMediaElementSource(audio);
-        fileAnalyser = elCtx.createAnalyser();
-        fileAnalyser.fftSize = 128;
-        fileAnalyser.smoothingTimeConstant = 0.8;
-        srcNode.connect(fileAnalyser);
-        fileAnalyser.connect(elCtx.destination);
-        DJViz.bindAnalyser(fileAnalyser, function () { return playing && mode === "file"; });
-      } catch (e) { /* visualization is optional; audio still plays */ }
-    };
-
     const startMusic = function () {
       if (playing) return;
       if (fileAvailable && audio) {
-        ensureFileAnalyser();
-        if (elCtx && elCtx.state === "suspended") elCtx.resume();
         const p = audio.play();
         if (p && p.then) {
           p.then(function () { mode = "file"; setPlaying(true); })
