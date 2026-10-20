@@ -4,13 +4,23 @@ PRODID:-//Khushal weds Mitali//Wedding Invitation//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
+UID:khushal-mitali-sangeet-2026@invitation
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Asia/Kolkata:20261124T150000
+DTEND;TZID=Asia/Kolkata:20261124T230000
+SUMMARY:Khushal weds Mitali — Tikka Dastur, Sangeet Sandhya & Dinner
+DESCRIPTION:Tikka Dastur 3:00 PM · Sangeet Sandhya 6:30 PM · Dinner 8:00 PM onwards. Heritage Resort, Bikaner.
+LOCATION:Heritage Resort, Bikaner, Rajasthan, India
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
 UID:khushal-mitali-wedding-2026@invitation
 DTSTAMP:20260101T000000Z
-DTSTART;TZID=Asia/Kolkata:20261125T190000
-DTEND;TZID=Asia/Kolkata:20261125T230000
+DTSTART;TZID=Asia/Kolkata:20261125T170000
+DTEND;TZID=Asia/Kolkata:20261125T233000
 SUMMARY:Khushal weds Mitali — The Wedding
-DESCRIPTION:Join us for the sacred pheras as Khushal & Mitali (Navya) begin forever. Laxmi Niwas Palace\, Bikaner.
-LOCATION:Laxmi Niwas Palace, Lallgarh Palace Campus, Bikaner, Rajasthan 334001, India
+DESCRIPTION:Baraat 5:00 PM · Reception & Dinner 6:30 PM onwards · Panigrahan Sanskar 10:15 PM. Heritage Resort, Bikaner.
+LOCATION:Heritage Resort, Bikaner, Rajasthan, India
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR

@@ -1119,6 +1119,91 @@ section:not(.hero) {
 }
 
 /* ============================================================
+   COUPLE — lineage additions
+   ============================================================ */
+.couple__grand {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  opacity: 0.7;
+  line-height: 1.45;
+}
+.couple__alias { font-size: 0.7em; color: var(--marigold); }
+
+/* ============================================================
+   EVENTS — day dividers & note
+   ============================================================ */
+.events__day {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 640px;
+  margin: 2.6rem auto 1.6rem;
+}
+.events__day-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
+}
+.events__day-label {
+  font-family: var(--font-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  color: var(--red-600);
+  white-space: nowrap;
+}
+.events__note {
+  margin-top: 2.2rem;
+  font-style: italic;
+  color: var(--maroon-700);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   FOOTER — blessings & contacts
+   ============================================================ */
+.footer__blessings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+  max-width: 880px;
+  margin: 2.6rem auto 1.4rem;
+  font-size: 0.84rem;
+  color: var(--gold-200);
+  opacity: 0.92;
+  line-height: 1.6;
+}
+.footer__bless-head {
+  display: block;
+  font-family: var(--font-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  color: var(--gold-300);
+  margin-bottom: 0.5rem;
+}
+.footer__blessings em { color: var(--cream); font-style: italic; }
+.footer__contact { margin: 0.4rem auto 1.4rem; max-width: 760px; }
+.footer__phones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.4rem;
+  margin-top: 0.6rem;
+}
+.footer__phones a {
+  color: var(--gold-200);
+  font-size: 0.84rem;
+  border-bottom: 1px dotted rgba(212, 175, 55, 0.5);
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
+.footer__phones a:hover { color: var(--gold-300); }
+@media (max-width: 720px) {
+  .footer__blessings { grid-template-columns: 1fr; gap: 1.2rem; text-align: center; }
+}
+
+/* ============================================================
    ACCESSIBILITY — reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {

@@ -66,9 +66,7 @@
       <a href="#couple">The Couple</a>
       <a href="#events">Celebrations</a>
       <a href="#dj">DJ Night</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#venue">Venue</a>
-      <a href="#rsvp" class="nav__cta">RSVP</a>
+      <a href="#venue" class="nav__cta">Venue</a>
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -118,7 +116,7 @@
       <p class="hero__date reveal" data-delay="720">The Twenty-Fifth of November · Two Thousand Twenty-Six</p>
       <p class="hero__place reveal" data-delay="820">Bikaner · Rajasthan · India</p>
 
-      <a href="#rsvp" class="btn btn--gold reveal" data-delay="940">Reserve your seat</a>
+      <a href="#events" class="btn btn--gold reveal" data-delay="940">View our celebrations</a>
     </div>
 
     <a href="#countdown" class="hero__scroll" aria-label="Scroll down">
@@ -151,10 +149,10 @@
     <div class="couple__grid">
       <article class="couple__card reveal">
         <div class="couple__photo" data-initial="K" aria-label="Portrait of Khushal"></div>
-        <h3 class="couple__name">Khushal Goyal</h3>
+        <h3 class="couple__name">Khushal</h3>
         <p class="couple__role">The Groom</p>
         <p class="couple__bio">An old soul with a boundless heart — equal parts dreamer and doer. He finds poetry in ordinary days and swears Mitali laughs at all his worst jokes on purpose.</p>
-        <p class="couple__parents">Son of Mr. &amp; Mrs. Goyal</p>
+        <p class="couple__parents">Son of Rekha &amp; Ashok Kumar Goyal<br /><span class="couple__grand">Grandson of Late Smt. Asha Rani &amp; Late Sh. Yirendra Kumar Goyal</span></p>
       </article>
 
       <div class="couple__join reveal" data-delay="150" aria-hidden="true">
@@ -163,10 +161,10 @@
 
       <article class="couple__card reveal" data-delay="300">
         <div class="couple__photo" data-initial="M" aria-label="Portrait of Mitali"></div>
-        <h3 class="couple__name">Mitali Gupta (Navya)</h3>
+        <h3 class="couple__name">Mitali <span class="couple__alias">(Navya)</span></h3>
         <p class="couple__role">The Bride</p>
         <p class="couple__bio">Grace with a spark of mischief. She paints, she wanders, she lights up every room she walks into — and she has, quite simply, Khushal's whole heart.</p>
-        <p class="couple__parents">Daughter of Mr. &amp; Mrs. Gupta</p>
+        <p class="couple__parents">Daughter of Anjana &amp; Girraj Prasad Gupta<br /><span class="couple__grand">Granddaughter of Late Smt. Sushila Devi &amp; Late Laddu Ram Ji Gupta</span></p>
       </article>
     </div>
   </section>
@@ -175,50 +173,86 @@
   <section class="events" id="events">
     <div class="section-ornament" aria-hidden="true"></div>
     <p class="section-eyebrow reveal">Wedding Festivities</p>
-    <h2 class="section-title reveal">Three days of joy</h2>
-    <p class="section-sub reveal">Every ritual, a thread in the celebration — we hope you'll be part of them all.</p>
+    <h2 class="section-title reveal">Golden Moments</h2>
+    <p class="section-sub reveal">Two days of rituals, blessings &amp; celebration — we hope you'll share them all with us.</p>
+
+    <div class="events__day reveal">
+      <span class="events__day-line"></span>
+      <span class="events__day-label">Tuesday · 24 November 2026</span>
+      <span class="events__day-line"></span>
+    </div>
 
     <div class="events__grid">
       <article class="event-card reveal">
         <div class="event-card__icon">
-          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M24 6c-4 6-10 8-10 15a10 10 0 0 0 20 0c0-7-6-9-10-15z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M24 20v10M19 25h10" stroke="currentColor" stroke-width="1.2"/></svg>
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></g></svg>
         </div>
-        <h3>Mehndi</h3>
-        <p class="event-card__when">Mon · 23 Nov</p>
-        <p class="event-card__where">Residence</p>
-        <p class="event-card__note">Henna, music & laughter as the bride's hands are adorned.</p>
+        <h3>Tikka Dastur</h3>
+        <p class="event-card__when">Tue · 24 Nov · 3:00 PM</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">The tilak ceremony — blessings to begin the celebrations.</p>
       </article>
 
       <article class="event-card reveal" data-delay="120">
         <div class="event-card__icon">
           <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M14 34V16l10-4 10 4v18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M19 34V24h10v10M24 12v4" stroke="currentColor" stroke-width="1.2"/></svg>
         </div>
-        <h3>Sangeet</h3>
-        <p class="event-card__when">Tue · 24 Nov · 6:00 PM onward</p>
-        <p class="event-card__where">Grand Ballroom</p>
-        <p class="event-card__note">An evening of dance, melody and a little healthy family rivalry.</p>
+        <h3>Sangeet Sandhya</h3>
+        <p class="event-card__when">Tue · 24 Nov · 6:30 PM</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">An evening of music, dance and a little family rivalry.</p>
       </article>
 
       <article class="event-card reveal" data-delay="240">
         <div class="event-card__icon">
-          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></g></svg>
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M12 20l4-8h16l4 8M10 20h28l-2 16H12z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M20 26h8" stroke="currentColor" stroke-width="1.2"/></svg>
         </div>
-        <h3>Haldi</h3>
-        <p class="event-card__when">Wed · 25 Nov · 11:00 AM onward</p>
-        <p class="event-card__where">Poolside Lawn</p>
-        <p class="event-card__note">A golden blessing of turmeric, sunshine and good wishes.</p>
+        <h3>Dinner</h3>
+        <p class="event-card__when">Tue · 24 Nov · 8:00 PM onwards</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">A feast to round off the night under the Bikaner sky.</p>
+      </article>
+    </div>
+
+    <div class="events__day reveal">
+      <span class="events__day-line"></span>
+      <span class="events__day-label">Wednesday · 25 November 2026</span>
+      <span class="events__day-line"></span>
+    </div>
+
+    <div class="events__grid">
+      <article class="event-card reveal">
+        <div class="event-card__icon">
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M24 6c-4 6-10 8-10 15a10 10 0 0 0 20 0c0-7-6-9-10-15z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M24 20v10M19 25h10" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3>Baraat</h3>
+        <p class="event-card__when">Wed · 25 Nov · 5:00 PM</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">The groom's joyous procession, dhol and dancing all the way.</p>
       </article>
 
-      <article class="event-card event-card--feature reveal" data-delay="360">
+      <article class="event-card reveal" data-delay="120">
+        <div class="event-card__icon">
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M12 20l4-8h16l4 8M10 20h28l-2 16H12z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M20 26h8" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <h3>Reception &amp; Dinner</h3>
+        <p class="event-card__when">Wed · 25 Nov · 6:30 PM onwards</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">Greet the couple, share a meal and raise a toast.</p>
+      </article>
+
+      <article class="event-card event-card--feature reveal" data-delay="240">
         <div class="event-card__icon">
           <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M24 40s-13-8-13-19a7 7 0 0 1 13-3 7 7 0 0 1 13 3c0 11-13 19-13 19z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
         </div>
-        <h3>The Wedding</h3>
-        <p class="event-card__when">Wed · 25 Nov · 7:00 PM onward</p>
-        <p class="event-card__where">Palace Mandap</p>
-        <p class="event-card__note">Seven vows, seven steps, one lifetime. The sacred pheras await.</p>
+        <h3>Panigrahan Sanskar</h3>
+        <p class="event-card__when">Wed · 25 Nov · 10:15 PM</p>
+        <p class="event-card__where">Heritage Resort</p>
+        <p class="event-card__note">Seven vows, seven steps, one lifetime. The sacred pheras.</p>
       </article>
     </div>
+
+    <p class="events__note reveal">✦ Baraat departs from Heritage Resort to Heritage Resort, Bikaner ✦</p>
   </section>
 
   <!-- ====== DJ NIGHT ====== -->
@@ -252,25 +286,9 @@
         <div class="dj__speaker dj__speaker--r" aria-hidden="true"><span></span><span></span></div>
       </div>
 
-      <p class="dj__meta reveal">🎧 DJ Night · right after the Sangeet · Tue 24 Nov · 12:00 PM onward · Grand Ballroom</p>
-      <a href="#rsvp" class="btn btn--gold dj__cta reveal">Join the party</a>
+      <p class="dj__meta reveal">🎧 DJ Night · right after the Sangeet Sandhya · Tue 24 Nov · 6:30 PM onward · Heritage Resort</p>
+      <a href="#venue" class="btn btn--gold dj__cta reveal">Find the venue</a>
       <p class="dj__hint reveal">Tap the ♪ button and watch the bars dance to our song.</p>
-    </div>
-  </section>
-
-  <!-- ====== GALLERY ====== -->
-  <section class="gallery" id="gallery">
-    <div class="section-ornament" aria-hidden="true"></div>
-    <p class="section-eyebrow reveal">Moments</p>
-    <h2 class="section-title reveal">A few of our favourite frames</h2>
-
-    <div class="gallery__grid">
-      <figure class="gallery__item gallery__item--tall reveal" data-caption="Where it began"></figure>
-      <figure class="gallery__item reveal" data-caption="Sunset walks" data-delay="90"></figure>
-      <figure class="gallery__item reveal" data-caption="The proposal" data-delay="180"></figure>
-      <figure class="gallery__item gallery__item--wide reveal" data-caption="Festival of lights" data-delay="270"></figure>
-      <figure class="gallery__item reveal" data-caption="Road trips" data-delay="360"></figure>
-      <figure class="gallery__item gallery__item--tall reveal" data-caption="Forever, from here" data-delay="450"></figure>
     </div>
   </section>
 
@@ -282,12 +300,12 @@
 
     <div class="venue__grid">
       <div class="venue__info reveal">
-        <h3>Laxmi Niwas Palace</h3>
-        <p>Lallgarh Palace Campus, Bikaner<br />Rajasthan 334001, India</p>
+        <h3>Heritage Resort</h3>
+        <p>Bikaner<br />Rajasthan, India</p>
         <ul class="venue__list">
           <li><strong>Nearest airport</strong> · Nal (BKB), 20 min</li>
-          <li><strong>Stay</strong> · A block of rooms is reserved for guests</li>
-          <li><strong>Shuttle</strong> · Hourly from the airport on 24–25 Nov</li>
+          <li><strong>Celebrations</strong> · 24–25 November 2026</li>
+          <li><strong>Note</strong> · Baraat departs from Heritage Resort</li>
         </ul>
         <a class="btn btn--gold" href="https://maps.app.goo.gl/hKt8tGbggPVue2Un8" target="_blank" rel="noopener">Open in Maps</a>
       </div>
@@ -300,43 +318,6 @@
     </div>
   </section>
 
-  <!-- ====== RSVP ====== -->
-  <section class="rsvp" id="rsvp">
-    <div class="section-ornament" aria-hidden="true"></div>
-    <p class="section-eyebrow reveal">Be There</p>
-    <h2 class="section-title reveal">Will you celebrate with us?</h2>
-    <p class="section-sub reveal">Kindly respond by the 1st of November, 2026.</p>
-
-    <form class="rsvp__form reveal" id="rsvpForm" novalidate>
-      <div class="field">
-        <input type="text" id="guestName" name="guestName" required placeholder=" " />
-        <label for="guestName">Your full name</label>
-      </div>
-      <div class="field">
-        <input type="email" id="guestEmail" name="guestEmail" required placeholder=" " />
-        <label for="guestEmail">Email address</label>
-      </div>
-      <div class="field">
-        <select id="attending" name="attending" required>
-          <option value="" disabled selected></option>
-          <option value="yes">Joyfully accepts</option>
-          <option value="no">Regretfully declines</option>
-        </select>
-        <label for="attending">Will you attend?</label>
-      </div>
-      <div class="field">
-        <input type="number" id="guests" name="guests" min="0" max="10" value="1" placeholder=" " />
-        <label for="guests">Number of guests</label>
-      </div>
-      <div class="field field--full">
-        <textarea id="message" name="message" rows="3" placeholder=" "></textarea>
-        <label for="message">A note for the couple (optional)</label>
-      </div>
-      <button type="submit" class="btn btn--gold rsvp__submit">Send my RSVP</button>
-      <p class="rsvp__status" id="rsvpStatus" role="status" aria-live="polite"></p>
-    </form>
-  </section>
-
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
     <div class="footer__mandala" aria-hidden="true">
@@ -345,6 +326,32 @@
     <p class="footer__script">With love &amp; blessings</p>
     <p class="footer__names">Khushal &amp; Mitali</p>
     <p class="footer__families">The Goyal &amp; Gupta families</p>
+
+    <div class="footer__blessings">
+      <div class="footer__bless-col">
+        <span class="footer__bless-head">Maternal Side</span>
+        Sh. Shiv Shankar Gupta · Suraj Gupta<br />Yogendra Gupta &amp; All Gupta Family
+      </div>
+      <div class="footer__bless-col">
+        <span class="footer__bless-head">With Love</span>
+        Smt. Cheshta Goyal, Harpreet Singh<br />&amp; Harsasees Kaur — <em>“Mere Mamu Ki Shadi Me Jarur Aana — Pari”</em>
+      </div>
+      <div class="footer__bless-col">
+        <span class="footer__bless-head">Best Compliments</span>
+        Yogesh Goyal · Rajesh Goyal · Kapil<br />Utkrash &amp; All Goyal Family
+      </div>
+    </div>
+
+    <div class="footer__contact">
+      <span class="footer__bless-head">For your blessings &amp; enquiries</span>
+      <p class="footer__phones">
+        <a href="tel:+918005838568">Ashok Kumar Goyal · 80058 38568</a>
+        <a href="tel:+917597741087">Rekha Goyal · 75977 41087</a>
+        <a href="tel:+919413769432">Khushal Goyal · 94137 69432</a>
+        <a href="tel:+919694851566">Cheshta Goyal · 96948 51566</a>
+      </p>
+    </div>
+
     <p class="footer__hash">#KhushalWedsMitali · #ForeverNavya</p>
     <p class="footer__credit">Made with love · A digital invitation</p>
   </footer>

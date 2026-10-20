@@ -4,9 +4,9 @@
 (function () {
   "use strict";
 
-  /* ---------- Wedding date (for countdown) ---------- */
-  // 25 November 2026, 7:00 PM IST (UTC+5:30)
-  const WEDDING_DATE = new Date("2026-11-25T19:00:00+05:30");
+  /* ---------- Celebrations start (for countdown) ---------- */
+  // Tikka Dastur — 24 November 2026, 3:00 PM IST (UTC+5:30)
+  const WEDDING_DATE = new Date("2026-11-24T15:00:00+05:30");
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -497,63 +497,6 @@
       if (playing) { stopMusic(); return; }
       startMusic();
     });
-  }
-
-  /* ===========================================================
-     RSVP FORM (client-side only)
-     =========================================================== */
-  const form = document.getElementById("rsvpForm");
-  const status = document.getElementById("rsvpStatus");
-  if (form && status) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = form.guestName.value.trim();
-      const email = form.guestEmail.value.trim();
-      const attending = form.attending.value;
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-      status.classList.remove("is-error");
-
-      if (!name || !emailOk || !attending) {
-        status.classList.add("is-error");
-        status.textContent = "Please share your name, a valid email, and your response.";
-        return;
-      }
-
-      // Persist locally so a revisit remembers the response.
-      try {
-        localStorage.setItem(
-          "rsvp_khushal_mitali",
-          JSON.stringify({
-            name: name,
-            email: email,
-            attending: attending,
-            guests: form.guests.value,
-            message: form.message.value,
-            at: new Date().toISOString(),
-          })
-        );
-      } catch (err) { /* storage may be blocked — not fatal */ }
-
-      if (attending === "yes") {
-        status.textContent = "Thank you, " + name + "! We can't wait to celebrate with you. 💛";
-      } else {
-        status.textContent = "Thank you for letting us know, " + name + ". You'll be missed dearly.";
-      }
-      form.querySelector(".rsvp__submit").textContent = "RSVP received ✓";
-
-      // NOTE: to collect responses for real, point this at a form service
-      // (e.g. Formspree, Google Forms, Netlify Forms) by setting the form's
-      // `action` + `method` and submitting with fetch().
-    });
-
-    // Restore a previous response if present
-    try {
-      const saved = JSON.parse(localStorage.getItem("rsvp_khushal_mitali") || "null");
-      if (saved && saved.name) {
-        status.textContent = "Welcome back, " + saved.name + " — your RSVP is saved.";
-      }
-    } catch (err) { /* ignore */ }
   }
 
   /* ===========================================================
