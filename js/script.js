@@ -419,6 +419,77 @@
   }
 
   /* ===========================================================
+     RSVP → Google Form (secure, no credentials in the page)
+     The form posts straight to the couple's Google Form response
+     endpoint; nothing sensitive lives here.
+     =========================================================== */
+  const RSVP_CONFIG = {
+    action: "https://docs.google.com/forms/d/e/1FAIpQLSe57ctE2KvUI0u8b0hY4MV3-2yu3zZh76ZbcN6RfYWodVze0w/formResponse",
+    fields: {
+      name: "entry.586606393",
+      phone: "entry.1160575414",
+      attending: "entry.579998415",
+      guests: "entry.1931955438",
+      message: "entry.1619456040",
+    },
+  };
+
+  (function rsvpForm() {
+    const form = document.getElementById("rsvpForm");
+    const statusEl = document.getElementById("rsvpStatus");
+    if (!form || !statusEl) return;
+    const submitBtn = form.querySelector(".rsvp__submit");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = form.guestName.value.trim();
+      const attending = form.attending.value;
+      statusEl.classList.remove("is-error");
+
+      if (!name || !attending) {
+        statusEl.classList.add("is-error");
+        statusEl.textContent = "Please share your name and whether you can join us.";
+        return;
+      }
+
+      const data = new URLSearchParams();
+      const map = RSVP_CONFIG.fields;
+      data.append(map.name, name);
+      if (form.guestPhone.value.trim()) data.append(map.phone, form.guestPhone.value.trim());
+      data.append(map.attending, attending);
+      data.append(map.guests, form.guests.value);
+      if (form.message.value.trim()) data.append(map.message, form.message.value.trim());
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+
+      // Google Forms doesn't send CORS headers, so this is fire-and-forget
+      // with no-cors: the response is opaque but the entry is recorded.
+      fetch(RSVP_CONFIG.action, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: data.toString(),
+      })
+        .then(function () {
+          form.reset();
+          submitBtn.textContent = "RSVP received ✓";
+          statusEl.classList.remove("is-error");
+          statusEl.textContent =
+            attending === "Joyfully accepts"
+              ? "Thank you, " + name + "! We can't wait to celebrate with you. 💛"
+              : "Thank you for letting us know, " + name + ". You'll be missed dearly.";
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send my RSVP";
+          statusEl.classList.add("is-error");
+          statusEl.textContent = "Something went wrong — please try again, or call the numbers below.";
+        });
+    });
+  })();
+
+  /* ===========================================================
      Smooth anchor focus for accessibility
      =========================================================== */
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {

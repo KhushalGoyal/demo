@@ -288,12 +288,34 @@
     <h2 class="section-title reveal">Will you celebrate with us?</h2>
     <p class="section-sub reveal">Kindly send your response by the 15th of November, 2026.</p>
 
-    <div class="rsvp__embed reveal">
-      <iframe
-        title="RSVP form for Khushal weds Mitali"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSe57ctE2KvUI0u8b0hY4MV3-2yu3zZh76ZbcN6RfYWodVze0w/viewform?embedded=true"
-        loading="lazy">Loading the RSVP form…</iframe>
-    </div>
+    <form class="rsvp__form reveal" id="rsvpForm" novalidate>
+      <div class="field">
+        <input type="text" id="guestName" name="guestName" required placeholder=" " />
+        <label for="guestName">Your full name</label>
+      </div>
+      <div class="field">
+        <input type="tel" id="guestPhone" name="guestPhone" placeholder=" " />
+        <label for="guestPhone">Phone number</label>
+      </div>
+      <div class="field">
+        <select id="attending" name="attending" required>
+          <option value="" disabled selected></option>
+          <option value="Joyfully accepts">Joyfully accepts</option>
+          <option value="Regretfully declines">Regretfully declines</option>
+        </select>
+        <label for="attending">Will you attend?</label>
+      </div>
+      <div class="field">
+        <input type="number" id="guests" name="guests" min="1" max="20" value="1" placeholder=" " />
+        <label for="guests">Number of guests</label>
+      </div>
+      <div class="field field--full">
+        <textarea id="message" name="message" rows="3" placeholder=" "></textarea>
+        <label for="message">A note for the couple (optional)</label>
+      </div>
+      <button type="submit" class="btn btn--gold rsvp__submit">Send my RSVP</button>
+      <p class="rsvp__status" id="rsvpStatus" role="status" aria-live="polite"></p>
+    </form>
   </section>
 
   <!-- ====== FOOTER ====== -->
