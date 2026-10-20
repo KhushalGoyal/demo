@@ -799,6 +799,11 @@ section:not(.hero) {
 /* ============================================================
    RSVP
    ============================================================ */
+/* RSVP-gated elements stay hidden until RSVPs are opened
+   (toggle RSVP_ENABLED in js/script.js). */
+body:not(.rsvp-on) .rsvp-gated {
+  display: none !important;
+}
 .rsvp {
   background: linear-gradient(135deg, var(--cream), var(--ivory));
   max-width: none !important;

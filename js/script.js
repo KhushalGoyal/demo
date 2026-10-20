@@ -4,6 +4,14 @@
 (function () {
   "use strict";
 
+  /* ---------- RSVP toggle ----------
+     Flip to `true` to open RSVPs. When on, the RSVP section, the
+     "RSVP" nav link and the hero "Reserve your seat" button all
+     appear. While `false` (the default) every RSVP-related element
+     stays hidden entirely. */
+  const RSVP_ENABLED = false;
+  document.body.classList.toggle("rsvp-on", RSVP_ENABLED);
+
   /* ---------- Celebrations start (for countdown) ---------- */
   // Tikka Dastur — 24 November 2026, 3:00 PM IST (UTC+5:30)
   const WEDDING_DATE = new Date("2026-11-24T15:00:00+05:30");
