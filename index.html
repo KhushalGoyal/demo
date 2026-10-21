@@ -164,6 +164,17 @@
       color: var(--gold-200); opacity: 0.72;
     }
 
+    .chooser__brand { margin-top: 2.4rem; display: grid; justify-items: center; gap: 0.6rem; }
+    .chooser__brand-eyebrow {
+      font-family: var(--font-sans);
+      letter-spacing: 0.3em; text-transform: uppercase;
+      font-size: 0.56rem; color: var(--gold-200); opacity: 0.72;
+    }
+    .chooser__brand-logo {
+      width: min(280px, 66vw); height: auto; opacity: 0.95;
+      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+    }
+
     @media (max-width: 640px) {
       .chooser__cards { grid-template-columns: 1fr; }
     }
@@ -197,6 +208,11 @@
     </div>
 
     <p class="chooser__note">♪ Each invitation opens with music &amp; a short intro</p>
+
+    <div class="chooser__brand">
+      <span class="chooser__brand-eyebrow">An invitation by</span>
+      <img class="chooser__brand-logo" src="assets/wedlock-logo.png" alt="Wedlock Events" width="900" height="315" />
+    </div>
   </main>
 
 </body>

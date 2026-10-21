@@ -1048,6 +1048,28 @@ body:not(.rsvp-on) .rsvp-gated {
   .footer__blessings { grid-template-columns: 1fr; gap: 1.2rem; text-align: center; }
 }
 
+/* ---- Presenter brand (Wedlock Events) ---- */
+.footer__brand {
+  margin-top: 2.2rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+}
+.footer__brand-eyebrow {
+  font-family: var(--font-sans);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.56rem;
+  color: var(--gold-200);
+  opacity: 0.72;
+}
+.footer__brand-logo {
+  width: min(300px, 68vw);
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.4));
+}
+
 /* ============================================================
    BRIDE SIDE THEME  —  activated by  ?bride=1  (or ?side=bride)
    ------------------------------------------------------------
