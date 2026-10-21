@@ -101,8 +101,15 @@
 
     // Swap the background track for the bride side (before the music
     // module probes the source, so it picks up the bride song).
+    // Keep the page's own path prefix (the groom <source> already points at
+    // ../assets/music.mp3 from a sub-page) and only swap the filename, so the
+    // bride track resolves correctly whatever folder the page is served from.
     if (BRIDE.music) {
-      set("#bgMusic source", function (s) { s.setAttribute("src", BRIDE.music); });
+      const brideFile = BRIDE.music.replace(/^.*\//, "");
+      set("#bgMusic source", function (s) {
+        const cur = s.getAttribute("src") || BRIDE.music;
+        s.setAttribute("src", cur.replace(/[^/]*$/, brideFile));
+      });
       set("#bgMusic", function (a) { if (typeof a.load === "function") a.load(); });
     }
 
