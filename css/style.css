@@ -1049,6 +1049,63 @@ body:not(.rsvp-on) .rsvp-gated {
 }
 
 /* ============================================================
+   BRIDE SIDE THEME  —  activated by  ?bride=1  (or ?side=bride)
+   ------------------------------------------------------------
+   The groom side keeps its maroon · gold · marigold palette.
+   The bride side re-dresses the whole invitation in "Rani Pink":
+   deep plum + rose-gold + blush ivory — a coordinated complement
+   so both links clearly belong to the same wedding.
+   Almost everything rides the CSS variables, so overriding them
+   on body.bride recolours the page; the few rules below patch
+   the surfaces that use literal colours.
+   ============================================================ */
+body.bride {
+  --maroon-900: #3d0a2b;   /* deep plum        */
+  --maroon-800: #5a0f3f;   /* rich rani base   */
+  --maroon-700: #822056;   /* plum-rose        */
+  --red-600:    #a83279;   /* rani pink accent */
+  --gold-400:   #cf9f6b;   /* rose gold        */
+  --gold-300:   #e7c38f;
+  --gold-200:   #f4e0c2;
+  --marigold:   #e06a9c;   /* rose-pink pop    */
+  --ivory:      #fff5f8;   /* blush ivory      */
+  --cream:      #fde8ef;
+  --ink:        #3a1024;
+}
+
+/* literal-colour surfaces that don't ride the variables */
+body.bride::before {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(224,106,156,0.09), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(130,32,86,0.08), transparent 45%);
+}
+body.bride .nav.is-scrolled { background: rgba(61, 10, 43, 0.92); }
+body.bride .music-toggle    { background: rgba(61, 10, 43, 0.9); }
+body.bride .hero__bg {
+  background:
+    linear-gradient(to bottom, rgba(61,10,43,0.55), rgba(61,10,43,0.78)),
+    radial-gradient(ellipse at 50% 0%, var(--maroon-700), var(--maroon-900) 70%);
+}
+
+/* the bride side lists the bride first */
+body.bride .couple__card[data-role="bride"] { order: 1; }
+body.bride .couple__join                    { order: 2; }
+body.bride .couple__card[data-role="groom"] { order: 3; }
+
+/* placeholder contact — fill the number in js/script.js → BRIDE.contacts */
+.footer__phone-tbd {
+  color: var(--gold-200);
+  font-size: 0.84rem;
+  opacity: 0.72;
+  border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
+  padding-bottom: 2px;
+}
+
+@media (max-width: 720px) {
+  body.bride .nav__links { background: rgba(61, 10, 43, 0.98); }
+}
+
+/* ============================================================
    ACCESSIBILITY — reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {

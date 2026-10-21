@@ -21,6 +21,112 @@
   } catch (e) { /* URL unparsable — fall back to RSVP_ENABLED */ }
   document.body.classList.toggle("rsvp-on", rsvpOn);
 
+  /* ===========================================================
+     SIDE SWITCH — Groom (default) · Bride (?bride=1)
+     -----------------------------------------------------------
+     The page is authored as the groom's (Goyal) invitation and
+     loads that way by default. Add ?bride=1 — or ?side=bride —
+     to the link and the whole invitation re-dresses itself for
+     the bride's (Gupta) side: names lead with Mitali, the hosts
+     and contacts become the Gupta family, and a rose-gold
+     "rani pink" theme replaces the maroon. ?bride=0 / ?side=groom
+     forces the groom side.
+
+     Bride-side hosts: the names are pre-filled; drop the real
+     phone numbers into BRIDE.contacts[].tel before you share the
+     bride-side link. Edit anything below to taste — it is the one
+     place the bride side is defined.
+     =========================================================== */
+  const BRIDE = {
+    title: "Mitali weds Khushal · A Wedding Invitation",
+    themeColor: "#5a0f3f",
+    mono: ["M", "K"],
+    names: ["Mitali", "Khushal"],
+    families: "The Gupta & Goyal families",
+    hashtags: "#MitaliWedsKhushal · #ForeverNavya",
+    baraatNote: "We joyfully welcome the baraat — the groom's procession arrives with dhol and dancing.",
+    petalColors: ["#e06a9c", "#cf9f6b", "#f4b6cf", "#e7c38f", "#c25b8a"],
+    contacts: [
+      { name: "Girraj Prasad Gupta", role: "Bride's Father", tel: "" },
+      { name: "Anjana Gupta",        role: "Bride's Mother", tel: "" },
+      { name: "Mitali (Navya)",      role: "The Bride",      tel: "" },
+      { name: "Shiv Shankar Gupta",  role: "",               tel: "" },
+    ],
+    blessings: [
+      { head: "Paternal Side",    html: "Sh. Girraj Prasad Gupta<br />&amp; the Gupta Parivaar" },
+      { head: "With Love",        html: "Smt. Anjana Gupta<br /><em>— blessings for our Navya —</em>" },
+      { head: "Best Compliments", html: "Shiv Shankar Gupta · Suraj Gupta<br />Yogendra Gupta &amp; All Gupta Family" },
+    ],
+  };
+
+  (function sideSwitch() {
+    let brideOn = false;
+    try {
+      const qs = new URLSearchParams(window.location.search);
+      const b = qs.get("bride");
+      const side = (qs.get("side") || "").toLowerCase();
+      if (b !== null) brideOn = !/^(0|false|no|off)$/i.test(b.trim());
+      if (side === "bride") brideOn = true;
+      if (side === "groom") brideOn = false;
+    } catch (e) { /* unparsable URL → groom side */ }
+
+    if (!brideOn) return;
+    document.body.classList.add("bride");
+
+    const set = function (sel, fn) { const el = document.querySelector(sel); if (el) fn(el); };
+    const txt = function (sel, value) { set(sel, function (el) { el.textContent = value; }); };
+
+    // Document title + browser theme colour
+    document.title = BRIDE.title;
+    set('meta[name="theme-color"]', function (m) { m.setAttribute("content", BRIDE.themeColor); });
+
+    // Monograms  K&M → M&K
+    const monoHTML = BRIDE.mono[0] + "<span>&amp;</span>" + BRIDE.mono[1];
+    set(".intro__mono", function (el) { el.innerHTML = monoHTML; });
+    set(".nav__monogram", function (el) { el.innerHTML = monoHTML; });
+
+    // Names lead with the bride (intro + hero)
+    set(".intro__names", function (el) {
+      el.innerHTML = BRIDE.names[0] + " <em>&amp;</em> " + BRIDE.names[1];
+    });
+    const heroNames = document.querySelectorAll(".hero__name");
+    if (heroNames.length === 2) {
+      heroNames[0].textContent = BRIDE.names[0];
+      heroNames[1].textContent = BRIDE.names[1];
+    }
+
+    // Footer couple name also leads with the bride
+    set(".footer__names", function (el) {
+      el.innerHTML = BRIDE.names[0] + " &amp; " + BRIDE.names[1];
+    });
+
+    // Baraat blurb, families line, hashtags
+    txt("#baraatNote", BRIDE.baraatNote);
+    txt(".footer__families", BRIDE.families);
+    txt(".footer__hash", BRIDE.hashtags);
+
+    // Footer blessings → Gupta family
+    set(".footer__blessings", function (box) {
+      box.innerHTML = BRIDE.blessings.map(function (c) {
+        return '<div class="footer__bless-col"><span class="footer__bless-head">' +
+          c.head + "</span>" + c.html + "</div>";
+      }).join("");
+    });
+
+    // Footer contacts → bride-side hosts
+    set(".footer__phones", function (box) {
+      box.innerHTML = BRIDE.contacts.map(function (c) {
+        const base = c.name + (c.role ? " · " + c.role : "");
+        if (c.tel) {
+          const digits = c.tel.replace(/\s+/g, "");
+          const pretty = digits.replace(/^(\+?\d{2})(\d{5})(\d{5})$/, "$1 $2 $3");
+          return '<a href="tel:' + digits + '">' + c.name + " · " + pretty + "</a>";
+        }
+        return '<span class="footer__phone-tbd">' + base + " · add number</span>";
+      }).join("");
+    });
+  })();
+
   /* ---------- Celebrations start (for countdown) ---------- */
   // Tikka Dastur — 24 November 2026, 3:00 PM IST (UTC+5:30)
   const WEDDING_DATE = new Date("2026-11-24T15:00:00+05:30");
@@ -176,7 +282,9 @@
   if (canvas && !prefersReduced) {
     const ctx = canvas.getContext("2d");
     let w, h, petals;
-    const COLORS = ["#f1a53a", "#e8853a", "#d4af37", "#f2dd9e", "#c25b4a"];
+    const COLORS = document.body.classList.contains("bride")
+      ? BRIDE.petalColors
+      : ["#f1a53a", "#e8853a", "#d4af37", "#f2dd9e", "#c25b4a"];
 
     function resize() {
       w = canvas.width = window.innerWidth;
