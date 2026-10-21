@@ -22,15 +22,21 @@
   document.body.classList.toggle("rsvp-on", rsvpOn);
 
   /* ===========================================================
-     SIDE SWITCH — Groom (default) · Bride (?bride=1)
+     SIDE SWITCH — Groom (/KhushalWedsMitali) · Bride (/MitaliWedsKhushal)
      -----------------------------------------------------------
-     The page is authored as the groom's (Goyal) invitation and
-     loads that way by default. Add ?bride=1 — or ?side=bride —
-     to the link and the whole invitation re-dresses itself for
-     the bride's (Gupta) side: names lead with Mitali, the hosts
-     and contacts become the Gupta family, and a rose-gold
-     "rani pink" theme replaces the maroon. ?bride=0 / ?side=groom
-     forces the groom side.
+     The same invitation markup is served from two clean paths.
+     Which side a page shows is decided, in priority order, by:
+       1. an explicit <html data-side="groom|bride"> on the page
+          (each sub-page sets this — the authoritative signal);
+       2. the URL path — /MitaliWedsKhushal = bride,
+          /KhushalWedsMitali = groom;
+       3. legacy / local-testing query overrides (?side=bride|groom,
+          ?bride=1|0) which always win, so old shared links and a
+          quick `python3 -m http.server` preview keep working.
+     On the bride side the whole invitation re-dresses itself for
+     the Gupta family: names lead with Mitali, the hosts and
+     contacts become the Gupta family, and a rose-gold "rani pink"
+     theme replaces the maroon.
 
      Bride-side hosts: the names are pre-filled; drop the real
      phone numbers into BRIDE.contacts[].tel before you share the
@@ -63,6 +69,18 @@
   (function sideSwitch() {
     let brideOn = false;
     try {
+      // 1) Explicit declaration from the page itself.
+      const declared = (document.documentElement.getAttribute("data-side") || "").toLowerCase();
+      if (declared === "bride") brideOn = true;
+      else if (declared === "groom") brideOn = false;
+      else {
+        // 2) Fall back to the clean-URL path.
+        const path = window.location.pathname.toLowerCase();
+        if (path.indexOf("mitaliwedskhushal") !== -1) brideOn = true;
+        else if (path.indexOf("khushalwedsmitali") !== -1) brideOn = false;
+      }
+
+      // 3) Query overrides always win (legacy links + local testing).
       const qs = new URLSearchParams(window.location.search);
       const b = qs.get("bride");
       const side = (qs.get("side") || "").toLowerCase();

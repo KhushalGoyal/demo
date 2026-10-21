@@ -24,12 +24,40 @@ wedding aesthetics (gold, maroon, marigold).
 ## 🗂 Structure
 
 ```
-index.html          # all markup / sections
-css/style.css       # the full design system & animations
-js/script.js        # countdown, petals, reveal, RSVP, nav, music
-assets/             # favicon, calendar file, (add your photos & music here)
-.github/workflows/  # GitHub Pages deployment
+index.html                  # landing page — choose groom's or bride's invitation
+KhushalWedsMitali/index.html  # groom's side  (/KhushalWedsMitali)
+MitaliWedsKhushal/index.html  # bride's side  (/MitaliWedsKhushal)
+css/style.css               # the full design system & animations
+js/script.js                # countdown, petals, reveal, RSVP, nav, music, side-switch
+assets/                     # favicon, calendar file, (add your photos & music here)
+.github/workflows/          # GitHub Pages deployment
 ```
+
+## 🔀 The two invitations
+
+- **`/KhushalWedsMitali`** opens the **groom's** side (Goyal family, maroon &
+  gold).
+- **`/MitaliWedsKhushal`** opens the **bride's** side (Gupta family, rani-pink —
+  names lead with Mitali, bride-side hosts, a separate song).
+- **`/`** (the root) is a chooser so anyone landing on the bare domain can pick
+  a side.
+
+Which side a page shows is decided by `<html data-side="groom|bride">` on that
+page (falling back to the URL path), so the **two sub-page files share the exact
+same body markup** — all the side-specific differences live in
+`js/script.js` (the `BRIDE` object) and `css/style.css` (`body.bride`).
+
+> **Maintenance note:** a content change to the invitation itself (dates, venue,
+> event cards, photos) must be made in **both** `KhushalWedsMitali/index.html`
+> and `MitaliWedsKhushal/index.html` — they are intentionally identical except
+> for the `data-side` flag and the `<head>` meta (title / social preview).
+
+### RSVP & links
+
+- Add **`?rsvp=1`** to either invitation (e.g. `/MitaliWedsKhushal?rsvp=1`) to
+  reveal the RSVP section, nav link and hero button. `?rsvp=0` forces it off.
+- Old links still work: `?bride=1` / `?side=bride` on the root redirect to
+  `/MitaliWedsKhushal`, and any `?rsvp=…` is carried across.
 
 ## 🚀 Viewing it locally
 
