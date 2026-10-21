@@ -40,6 +40,7 @@
   const BRIDE = {
     title: "Mitali weds Khushal · A Wedding Invitation",
     themeColor: "#5a0f3f",
+    music: "assets/bride-music.mp3",   // bride side plays this; groom keeps assets/music.mp3
     mono: ["M", "K"],
     names: ["Mitali", "Khushal"],
     families: "The Gupta & Goyal families",
@@ -79,6 +80,13 @@
     // Document title + browser theme colour
     document.title = BRIDE.title;
     set('meta[name="theme-color"]', function (m) { m.setAttribute("content", BRIDE.themeColor); });
+
+    // Swap the background track for the bride side (before the music
+    // module probes the source, so it picks up the bride song).
+    if (BRIDE.music) {
+      set("#bgMusic source", function (s) { s.setAttribute("src", BRIDE.music); });
+      set("#bgMusic", function (a) { if (typeof a.load === "function") a.load(); });
+    }
 
     // Monograms  K&M → M&K
     const monoHTML = BRIDE.mono[0] + "<span>&amp;</span>" + BRIDE.mono[1];
