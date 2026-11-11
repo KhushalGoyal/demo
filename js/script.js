@@ -46,11 +46,11 @@
   const BRIDE = {
     title: "Mitali weds Khushal · A Wedding Invitation",
     themeColor: "#5a0f3f",
-    music: "assets/bride-music.mp3",   // bride side plays this; groom keeps assets/music.mp3
+    music: "assets/music.mp3",   // bride side plays this; groom keeps assets/music.mp3
     mono: ["M", "K"],
     names: ["Mitali", "Khushal"],
     families: "The Gupta & Goyal families",
-    hashtags: "#MitaliWedsKhushal · #ForeverNavya",
+    hashtags: "#KhushMit",
     baraatNote: "We joyfully welcome the baraat — the groom's procession arrives with dhol and dancing.",
     petalColors: ["#e06a9c", "#cf9f6b", "#f4b6cf", "#e7c38f", "#c25b8a"],
     contacts: [
